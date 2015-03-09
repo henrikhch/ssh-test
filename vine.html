@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Page Title</title>
+  <script src="vine.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript">
+		
+		var interval;
+	
+		$(document).ready(function() {
+			
+			// Draw vines on page load
+			drawVine();
+			
+			// Restart on click
+			$("#myCanvas").click(function() {
+				clearInterval(interval);
+				drawVine();
+			});
+			
+		});
+		
+		function drawVine() {
+			
+			// Define lattice
+			var lattice = new Array(
+				new Array({x:120, y:50}, {x:390, y:50}),
+				new Array({x:255, y:50}, {x:255, y:255})					
+			);	
+			
+			// Get canvas context
+			var canvas = $("#myCanvas")[0];
+			canvas.width = $("#myCanvas").width();
+			canvas.height = $("#myCanvas").height();		
+			if (canvas.getContext) {
+				var context = canvas.getContext("2d");	
+				
+				// Clear canvas
+				context.clearRect(0, 0, canvas.width, canvas.height);					
+			
+				// Draw lattice
+				context.lineWidth = 0.5;
+				context.strokeStyle = "rgb(213, 213, 213)";
+				for (var i in lattice) {
+					context.beginPath();
+					context.moveTo(lattice[i][0].x, lattice[i][0].y);
+					context.lineTo(lattice[i][1].x, lattice[i][1].y);
+					context.stroke();
+					context.closePath();
+				}
+				
+				// Draw vine
+				interval = drawVineWithLattice(context, lattice, 255, 270, 600, true, true);
+			}
+		}
+		
+	</script>
+
+</head>
+
+<body>
+
+  <canvas id="myCanvas" width="1000" height="1000"></canvas>
+
+</body>
+
+</html>
